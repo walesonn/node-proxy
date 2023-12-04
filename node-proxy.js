@@ -1,3 +1,4 @@
+const moment = require("moment");
 const net = require("net");
 
 const host = "0.0.0.0";
@@ -69,9 +70,9 @@ const server = net.createServer({ keepAlive: true }, (client) => {
 
   client.on("error", (err) => {
     console.error(
-      `\x1b[31m${new Date()} ${client.remoteAddress} [CONNECTION ERROR]: ${
-        err.message
-      }\x1b[0m`
+      `\x1b[31m${moment(new Date()).format("YYYY-MM-DD HH:mm:ss")} ${
+        client.remoteAddress
+      } [CONNECTION ERROR]: ${err.message}\x1b[0m`
     );
   });
 });
