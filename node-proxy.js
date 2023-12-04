@@ -3,7 +3,7 @@ const net = require("net");
 const host = "0.0.0.0";
 const port = 8080;
 
-const targetHost = "0.0.0.0";
+const targetHost = "127.0.0.1";
 const targetPort = 22;
 
 const CREDENTIAL = "WTF";
