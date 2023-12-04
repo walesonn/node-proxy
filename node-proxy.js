@@ -68,7 +68,9 @@ const server = net.createServer({ keepAlive: true }, (client) => {
   });
 
   client.on("error", (err) => {
-    console.error(`\x1b[31m[CONNECTION ERROR]: ${err.message}\x1b[0m`);
+    console.error(
+      `\x1b[31m${client.remoteAddress} [CONNECTION ERROR]: ${err.message}\x1b[0m`
+    );
   });
 });
 
