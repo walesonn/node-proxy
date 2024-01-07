@@ -8,7 +8,6 @@ const targetHost = "127.0.0.1";
 const targetPort = 55555;
 
 const CREDENTIAL = "WTF";
-const TIMEOUT = 60000;
 
 const server = net.createServer({ keepAlive: true, allowHalfOpen: false }, (client) => {
   console.log(
@@ -18,11 +17,6 @@ const server = net.createServer({ keepAlive: true, allowHalfOpen: false }, (clie
   client.setKeepAlive(true);
   client.setDefaultEncoding("binary");
   client.setEncoding("binary");
-  client.setTimeout(TIMEOUT);
-  client.on("timeout", () => {
-    console.log(`\x1b[36m[TIMEOUT]${client.remoteAddress}:${client.remotePort}\x1b[0m`)
-    client.end()
-  })
 
   client.write("HTTP/1.1 200 ok!\r\n\r\n");
 
@@ -30,6 +24,7 @@ const server = net.createServer({ keepAlive: true, allowHalfOpen: false }, (clie
   client.on("connect", () => console.log("[CLIENT CONNECTED]"));
 
   client.once("data", (data) => {
+    client.write("HTTP/1.1 200 ok!\r\n\r\n");
     console.log(`Dados recebidos do cliente: ${data}`);
     if (!data) {
       client.write("HTTP/1.1 401 Access Denied\r\n\r\n");
@@ -67,12 +62,6 @@ const server = net.createServer({ keepAlive: true, allowHalfOpen: false }, (clie
     target.setKeepAlive(true);
     target.setDefaultEncoding("binary");
     target.setEncoding("binary");
-    target.setTimeout(TIMEOUT);
-
-    target.on("timeout", () => {
-      console.log(`\x1b[36m[TIMEOUT]${target.localAddress}:${target.localPort}\x1b[0m`)
-      target.end()
-    })
 
     target.once("ready", () => {
       console.log("\x1b[32m[TARGET READY]\x1b[0m");
