@@ -19,6 +19,8 @@ const server = net.createServer({ keepAlive: true, allowHalfOpen: false }, (clie
   client.setEncoding("binary");
   client.setTimeout(TIMEOUT)
 
+  client.write("HTTP/1.1 200 Websocket\r\n\r\n", "utf8")
+
   client.on("timeout", () => {
     console.log(`\x1b[31m[TIMEOUT REACHED]${client.remoteAddress}:${client.remotePort}\x1b[0m`)
     client.end()
@@ -44,7 +46,6 @@ const server = net.createServer({ keepAlive: true, allowHalfOpen: false }, (clie
 
     target.once("ready", () => {
       console.log("\x1b[32m[TARGET READY]\x1b[0m");
-      client.write("HTTP/1.1 200 Websocket\r\n\r\n", "utf8")
       target.on("data", (data) => {
         client.write(data);
       });
